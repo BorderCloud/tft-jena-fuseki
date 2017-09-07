@@ -1,6 +1,8 @@
 sudo: required
 
 language: php
+php:
+  - '7.1'
 
 services:
   - docker
@@ -20,3 +22,6 @@ script:
   -   docker run --privileged --name instance.jena-fuseki -h jena-fuseki -d jena-fuseki
   -   git clone --recursive https://github.com/BorderCloud/TFT.git
   -   TFT/tft-testsuite -a -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -d
+  -   TFT/tft -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -tt fuseki -tq http://172.17.0.7/test/query -tu http://172.17.0.7/test/update -r https://github.com/BorderCloud/TFT/jena-fuseki/v3.4.0 -o ./junit --softwareName="Jena Fuseki"  --softwareDescribeTag=v3.4.0 -d
+  -   TFT/tft-score -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -r  https://github.com/BorderCloud/TFT/jena-fuseki/v3.4.0  -d
+  
