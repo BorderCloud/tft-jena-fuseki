@@ -1,20 +1,22 @@
 sudo: required
 
-language: c
+language: php
 
 services:
   - docker
 
 before_install:
+  - docker build -t tft_virtuoso7_stable_service services
   - docker build -t jena-fuseki jena-fuseki
 
 script:
+# Deploy TFT
+
 # Run RDF database in order to save tests and results
   -   docker run --privileged --name instance.tft_database -d jena-fuseki
-
-# Run extern servers for tests
-  -   docker run --privileged --name  instance.tft.example.org -h example.org -d  jena-fuseki
-  -   docker run --privileged --name  instance.tft.example1.org -h example1.org -d  jena-fuseki
-  -   docker run --privileged --name  instance.tft.example2.org -h example2.org -d  jena-fuseki
+  -   docker run --privileged --name instance.tft.example.org -h example.org -d tft_virtuoso7_stable_service
+  -   docker run --privileged --name instance.tft.example1.org -h example1.org -d tft_virtuoso7_stable_service
+  -   docker run --privileged --name instance.tft.example2.org -h example2.org -d tft_virtuoso7_stable_service
   -   docker run --privileged --name instance.jena-fuseki -h jena-fuseki -d jena-fuseki
-  -   docker inspect bridge
+  -   git clone --recursive https://github.com/BorderCloud/TFT.git
+  -   TFT/tft-testsuite -a -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -d
