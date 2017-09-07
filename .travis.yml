@@ -14,7 +14,7 @@ before_install:
 script:
 # Deploy TFT
 # Run RDF database in order to save tests and results
-  -   docker run --privileged --name instance.tft_database -d bordercloud/tft-jena-fuseki
+  -   docker run --privileged --name instance.tft_database -d tft-jena-fuseki
   -   docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
   -   docker run --privileged --name instance.tft.example1.org -h example1.org -d bordercloud/tft-virtuoso7-stable
   -   docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
