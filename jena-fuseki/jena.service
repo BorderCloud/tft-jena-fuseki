@@ -1,0 +1,15 @@
+[Unit]
+Description=Jena server daemon
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=/opt/apache-jena-fuseki-3.4.0/load.sh
+ExecReload=pkill -9 -f fuseki || true
+ExecStop=pkill -9 -f fuseki || true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
