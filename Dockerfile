@@ -31,6 +31,10 @@ COPY fuseki-config.ttl /opt/apache-jena-fuseki-3.4.0
 COPY log4j.properties /opt/apache-jena-fuseki-3.4.0
 COPY load.sh /opt/apache-jena-fuseki-3.4.0
 COPY jena.service /etc/systemd/system
+
+RUN mkdir /opt/apache-jena-fuseki-3.4.0/run
+COPY shiro.ini /opt/apache-jena-fuseki-3.4.0/run
+
 RUN chmod +x /opt/apache-jena-fuseki-3.4.0/load.sh
 
 RUN systemctl enable jena
