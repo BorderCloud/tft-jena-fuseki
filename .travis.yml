@@ -10,6 +10,8 @@ env:
     - URI="https://travis-ci.org/BorderCloud/tft-jena-fuseki/builds/$((TRAVIS_JOB_ID - 1))"
     - NAME="Jena Fuseki"
     - VERSION="3.4.0"
+#    - SPARQLSCORE_DATABASE="134.158.74.247"
+    - SPARQLSCORE_DATABASE="172.17.0.2"
 
 sudo: required
 
@@ -27,18 +29,23 @@ before_install:
 script:
 # Deploy TFT
 # Run RDF database in order to save tests and results
-  -   docker run --privileged --name instance.tft_database -d tft-jena-fuseki
+  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+
   -   docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
   -   docker run --privileged --name instance.tft.example1.org -h example1.org -d bordercloud/tft-virtuoso7-stable
   -   docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
-  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+
+  -   docker run --privileged --name instance.tft_database -d tft-jena-fuseki
+
   -   git clone --recursive https://github.com/BorderCloud/TFT.git
   -   cd TFT
   -   composer install --dev
 #  -   ls
-  -   php ./tft-testsuite -a -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update
-  -   php ./tft -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -tt fuseki -tq http://172.17.0.6/test/query -tu http://172.17.0.6/test/update -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}
-  -   php ./tft-score -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -r  ${URI}
+  -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
+  -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -tq http://172.17.0.2/test/query -tu http://172.17.0.2/test/update -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}
+  -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
+
+  - ping 134.158.74.247
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
