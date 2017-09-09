@@ -16,8 +16,8 @@ env:
     - URI="https://travis-ci.org/BorderCloud/tft-jena-fuseki/builds/$((TRAVIS_JOB_ID - 1))"
     - NAME="Jena Fuseki"
     - VERSION="3.4.0"
-#    - SPARQLSCORE_DATABASE="134.158.74.247"
-    - SPARQLSCORE_DATABASE="172.17.0.6"
+    - SPARQLSCORE_DATABASE="134.158.74.247"
+#    - SPARQLSCORE_DATABASE="172.17.0.6" #local
 
 services:
   - docker
