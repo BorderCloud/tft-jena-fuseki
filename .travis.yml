@@ -7,7 +7,7 @@ notifications:
 
 env:
   global:
-    - URI="https://travis-ci.org/BorderCloud/tft-jena-fuseki/builds/$($TRAVIS_JOB_ID - 1)"
+    - URI="https://travis-ci.org/BorderCloud/tft-jena-fuseki/builds/$((TRAVIS_JOB_ID - 1))"
     - NAME="Jena Fuseki"
     - VERSION="3.4.0"
 
