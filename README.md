@@ -30,8 +30,9 @@ php ./tft-score -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/t
 ```
 
 
-# Reproduce without build
+# Reproduce in local without build
 
+```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker pull bordercloud/tft-virtuoso7-stable
@@ -45,5 +46,6 @@ git clone --recursive https://github.com/BorderCloud/TFT.git
 cd TFT
 composer install --dev
 php ./tft-testsuite -a -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update
-php ./tft -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -tt fuseki -tq http://172.17.0.6/test/query -tu http://172.17.0.6/test/update -r http://test.example.com -o ./junit --softwareName="Fuseki"  --softwareDescribeTag=v3.4.0
+php ./tft -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -tt fuseki -tq http://172.17.0.6/test/query -tu http://172.17.0.6/test/update -r http://test.example.com -o ./junit --softwareName="Fuseki"  --softwareDescribeTag=v3.4.0 --softwareDescribe=v3.4.0
 php ./tft-score -t fuseki -q http://172.17.0.2/test/query -u http://172.17.0.2/test/update -r  http://test.example.com
+```
