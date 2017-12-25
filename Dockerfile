@@ -23,7 +23,7 @@ RUN  yum install -y java \
 && yum clean all
 
 RUN  cd /tmp \
-  && wget -q --timeout=600 http://apache.mirrors.ovh.net/ftp.apache.org/dist/jena/binaries/apache-jena-fuseki-3.4.0.tar.gz \
+  && wget -q --timeout=600 http://www-eu.apache.org/dist/jena/binaries/apache-jena-fuseki-3.6.0.tar.gz \
   && tar xzvf *.tar.gz \
   &&  mv /tmp/apache-jena-fuseki-3.4.0  /opt
 
