@@ -23,19 +23,19 @@ RUN  yum install -y java \
 && yum clean all
 
 RUN  cd /tmp \
-  && wget -q --timeout=600 http://www-eu.apache.org/dist/jena/binaries/apache-jena-fuseki-3.6.0.tar.gz \
+  && wget -q --timeout=600 http://www-eu.apache.org/dist/jena/binaries/apache-jena-fuseki-3.8.0.tar.gz \
   && tar xzvf *.tar.gz \
-  &&  mv /tmp/apache-jena-fuseki-3.6.0  /opt
+  &&  mv /tmp/apache-jena-fuseki-3.8.0  /opt
 
-COPY fuseki-config.ttl /opt/apache-jena-fuseki-3.6.0
-COPY log4j.properties /opt/apache-jena-fuseki-3.6.0
-COPY load.sh /opt/apache-jena-fuseki-3.6.0
+COPY fuseki-config.ttl /opt/apache-jena-fuseki-3.8.0
+COPY log4j.properties /opt/apache-jena-fuseki-3.8.0
+COPY load.sh /opt/apache-jena-fuseki-3.8.0
 COPY jena.service /etc/systemd/system
 
-RUN mkdir /opt/apache-jena-fuseki-3.6.0/run
-COPY shiro.ini /opt/apache-jena-fuseki-3.6.0/run
+RUN mkdir /opt/apache-jena-fuseki-3.8.0/run
+COPY shiro.ini /opt/apache-jena-fuseki-3.8.0/run
 
-RUN chmod +x /opt/apache-jena-fuseki-3.6.0/load.sh
+RUN chmod +x /opt/apache-jena-fuseki-3.8.0/load.sh
 
 RUN systemctl enable jena
 
