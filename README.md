@@ -8,21 +8,22 @@
 ```
 # Download docker's images 
 docker pull bordercloud/tft-virtuoso7-stable
+
 # Compile the docker's project 
 docker build -t tft-jena-fuseki .
   
 # Deploy network of SPARQL services
 
 # 172.17.0.2
-  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
 # 172.17.0.3
-  -   docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
+docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.4
-  -   docker run --privileged --name instance.tft.example1.org -h example1.org -d bordercloud/tft-virtuoso7-stable
+docker run --privileged --name instance.tft.example1.org -h example1.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.5
-  -   docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
+docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.6 for local
--   docker run --privileged --name instance.tft_database -d tft-jena-fuseki
+docker run --privileged --name instance.tft_database -d tft-jena-fuseki
 
 git clone --recursive https://github.com/BorderCloud/TFT.git
 cd TFT
