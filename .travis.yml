@@ -24,36 +24,39 @@ services:
   - docker
 
 before_install:
+# Download docker's images 
   - docker pull bordercloud/tft-virtuoso7-stable
-  - docker build -t tft-jena-fuseki .
 #  - docker pull bordercloud/tft-jena-fuseki
+
+# Compile the docker's project 
+  - docker build -t tft-jena-fuseki .
+
 
 script:
 # Deploy TFT
-# Run RDF database in order to save tests and results
+
+# 172.17.0.2
   -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
-
+# 172.17.0.3
   -   docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
+# 172.17.0.4
   -   docker run --privileged --name instance.tft.example1.org -h example1.org -d bordercloud/tft-virtuoso7-stable
+# 172.17.0.5
   -   docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
-
-##  -   docker run --privileged --name instance.tft_database -d tft-jena-fuseki
-
-## Run quick test
-#  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d bordercloud/tft-jena-fuseki
-#  -   docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
-#  -   docker run --privileged --name instance.tft.example1.org -h example1.org -d bordercloud/tft-virtuoso7-stable
-#  -   docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
-#  -   docker run --privileged --name instance.tft_database -d bordercloud/tft-jena-fuseki
+  
+# Run RDF database in order to save tests and results in local (decomment these line and change the variable SPARQLSCORE_DATABASE
+## 172.17.0.6 for local
+#  -   docker run --privileged --name instance.tft_database -d tft-jena-fuseki
 
   -   git clone --recursive https://github.com/BorderCloud/TFT.git
   -   cd TFT
-  -   composer install --dev
+  -   composer install
   -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
   -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -tq http://172.17.0.2/test/query -tu http://172.17.0.2/test/update -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}"
   -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
 
 
+# Save the Docker image
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
