@@ -24,6 +24,7 @@ services:
   - docker
 
 before_install:
+  - sudo apt-get update
   - sudo apt-get install jmeter
 # Download docker's images 
   - docker pull bordercloud/tft-virtuoso7-stable
