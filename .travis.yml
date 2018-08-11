@@ -11,14 +11,19 @@ notifications:
     on_success: always # default: change (other : never)
     on_failure: always # default: always
 
+addons:
+  apt:
+    packages:
+      - jmeter
+
 env:
   global:
     - URI="https://travis-ci.org/BorderCloud/tft-jena-fuseki/builds/$((TRAVIS_JOB_ID - 1))"
     - NAME="Jena Fuseki"
     - SOFTWARE_DESCRIBE="Jena Fuseki"
     - VERSION="3.8.0"
-    - SPARQLSCORE_DATABASE="134.158.74.247"
-#    - SPARQLSCORE_DATABASE="172.17.0.6" #local
+#    - SPARQLSCORE_DATABASE="134.158.74.247"
+    - SPARQLSCORE_DATABASE="172.17.0.6" #local
 
 services:
   - docker
@@ -26,17 +31,18 @@ services:
 before_install:
 # Download docker's images 
   - docker pull bordercloud/tft-virtuoso7-stable
-#  - docker pull bordercloud/tft-jena-fuseki
+  - docker pull bordercloud/tft-jena-fuseki
 
 # Compile the docker's project 
-  - docker build -t tft-jena-fuseki .
+#  - docker build -t tft-jena-fuseki .
 
 
 script:
 # Deploy TFT
 
 # 172.17.0.2
-  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+#  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+   -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d bordercloud/tft-jena-fuseki
 # 172.17.0.3
   -   docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.4
@@ -51,14 +57,15 @@ script:
   -   git clone --recursive https://github.com/BorderCloud/TFT.git
   -   cd TFT
   -   composer install
-  -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
-  -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -tq http://172.17.0.2/test/query -tu http://172.17.0.2/test/update -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}"
-  -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
+  -   jmeter -h
+#  -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
+#  -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -tq http://172.17.0.2/test/query -tu http://172.17.0.2/test/update -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}"
+#  -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
 
 
 # Save the Docker image
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-    docker push bordercloud/tft-jena-fuseki;
-    fi
+#after_success:
+#  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+#    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+#    docker push bordercloud/tft-jena-fuseki;
+#    fi
