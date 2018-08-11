@@ -11,11 +11,6 @@ notifications:
     on_success: always # default: change (other : never)
     on_failure: always # default: always
 
-addons:
-  apt:
-    packages:
-      - jmeter
-
 env:
   global:
     - URI="https://travis-ci.org/BorderCloud/tft-jena-fuseki/builds/$((TRAVIS_JOB_ID - 1))"
@@ -29,6 +24,7 @@ services:
   - docker
 
 before_install:
+  - sudo apt-get install -y jmeter
 # Download docker's images 
   - docker pull bordercloud/tft-virtuoso7-stable
   - docker pull bordercloud/tft-jena-fuseki
