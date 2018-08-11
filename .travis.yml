@@ -38,8 +38,8 @@ script:
 # Deploy TFT
 
 # 172.17.0.2
-  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
-#  -   docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d bordercloud/tft-jena-fuseki
+  -   docker run --privileged --name instance.tft-jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+#  -   docker run --privileged --name instance.tft-jena-fuseki -h tft-jena-fuseki -d bordercloud/tft-jena-fuseki
 # 172.17.0.3
   -   docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.4
@@ -51,6 +51,9 @@ script:
 ## 172.17.0.6 for local
   -   docker run --privileged --name instance.tft_database -d tft-jena-fuseki
 #  -   docker run --privileged --name instance.tft_database -d bordercloud/tft-jena-fuseki
+
+  - sleep 30s
+  
 
   -   git clone --recursive https://github.com/BorderCloud/TFT.git
   -   cd TFT
