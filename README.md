@@ -15,7 +15,7 @@ docker build -t tft-jena-fuseki .
 # Deploy network of SPARQL services
 
 # 172.17.0.2
-docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+docker run --privileged --name instance.tft-jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
 # 172.17.0.3
 docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.4
@@ -53,9 +53,16 @@ php ./tft-score -t fuseki -q http://172.17.0.6/test/query \
                 -r  http://example.org/buildid
 ```
 
+# restart containers of TFT
+```
+docker start instance.tft-jena-fuseki
+docker start instance.tft.example.org
+docker start instance.tft.example1.org
+docker start instance.tft.example2.org
+docker start instance.tft_database
+```
 
 # Delete containers of TFT
-
 ```
 docker stop instance.tft_database
 docker rm instance.tft_database
@@ -67,7 +74,6 @@ docker stop instance.tft.example2.org
 docker rm instance.tft.example2.org
 docker stop instance.tft-jena-fuseki
 docker rm instance.tft-jena-fuseki
-
 ```
 
 # Delete all containers
@@ -76,3 +82,14 @@ docker rm instance.tft-jena-fuseki
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 ```
+
+# Check the network
+```
+docker network inspect bridge
+```
+The result has to be :
+instance.tft-jena-fuseki" => 172.17.0.2
+instance.tft.example.org => 172.17.0.3
+instance.tft.example1.org => 172.17.0.4
+nstance.tft.example2.org => 172.17.0.5
+instance.tft_database => 172.17.0.6

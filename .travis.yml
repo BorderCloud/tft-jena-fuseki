@@ -1,9 +1,4 @@
 sudo: required
-
-language: php
-php:
-  - '7.1'
-
 notifications:
   email:
     recipients:
@@ -19,6 +14,10 @@ env:
     - VERSION="3.8.0"
 #    - SPARQLSCORE_DATABASE="134.158.74.247"
     - SPARQLSCORE_DATABASE="172.17.0.6" #local
+
+language: php
+php:
+  - '7.1'
 
 services:
   - docker
