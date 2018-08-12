@@ -6,11 +6,14 @@
 
 ### Install
 ```
+
+
 # Download docker's images 
 docker pull bordercloud/tft-virtuoso7-stable
+docker pull bordercloud/tft-jena-fuseki
 
 # Compile the docker's project 
-docker build -t tft-jena-fuseki .
+#docker build -t tft-jena-fuseki .
   
 # Deploy network of SPARQL services
 
@@ -32,6 +35,12 @@ cd TFT
 
 # install SPARQL client
 composer install 
+
+# install JMeter for protocol tests
+wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-4.0.tgz
+tar xvzf apache-jmeter-4.0.tgz 
+mv  apache-jmeter-4.0 jmeter
+rm apache-jmeter-4.0.tgz 
 ```
 
 ### Start tests
@@ -48,7 +57,7 @@ php ./tft -t fuseki -q http://172.17.0.6/test/query \
           -o ./junit  \
           --softwareName="Jena" \
           --softwareDescribeTag=X.X.X \
-          --softwareDescribe="Name"
+          --softwareDescribe="Name" -d
                     
 php ./tft-score -t fuseki -q http://172.17.0.6/test/query \
                           -u http://172.17.0.6/test/update \
