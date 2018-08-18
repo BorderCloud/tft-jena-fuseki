@@ -19,7 +19,25 @@ RUN  rpm --force -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-
 	&& rm -rf /var/cache/yum/* \
 	&& yum clean all
 
-RUN  yum install -y java \
+RUN  yum install -y python-docutils automake autoconf libtool ncurses-devel libxslt groff pcre-devel pkgconfig \
+    && cd /tmp \
+	&& wget https://packagecloud.io/install/repositories/varnishcache/varnish60/script.rpm.sh \
+    && chmod +x ./script.rpm.sh \
+    && ./script.rpm.sh \
+    && yum install -y varnish varnish-devel \
+	&& yum clean all
+
+RUN  cd /tmp \
+	&& git clone https://github.com/varnish/varnish-modules.git \
+    && cd varnish-modules \
+    && ./bootstrap  \
+    && ./configure \
+    && make \
+    && make install 
+        
+COPY varnish.params /etc/varnish/varnish.params
+
+RUN  yum install -y java  \
 && yum clean all
 
 RUN  cd /tmp \
@@ -37,8 +55,13 @@ COPY shiro.ini /opt/apache-jena-fuseki-3.8.0/run
 
 RUN chmod +x /opt/apache-jena-fuseki-3.8.0/load.sh
 
+
+COPY default.vcl /etc/varnish/default.vcl
+
 RUN systemctl enable jena
+RUN systemctl enable varnish
 
 EXPOSE 80
+EXPOSE 8080
 
 CMD ["/usr/sbin/init"]

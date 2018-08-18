@@ -6,20 +6,18 @@
 
 ### Install
 ```
-
-
 # Download docker's images 
 docker pull bordercloud/tft-virtuoso7-stable
-docker pull bordercloud/tft-jena-fuseki
+#docker pull bordercloud/tft-jena-fuseki
 
 # Compile the docker's project 
-#docker build -t tft-jena-fuseki .
+docker build -t tft-jena-fuseki .
   
 # Deploy network of SPARQL services
 
 # 172.17.0.2
-#docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
-docker run --privileged --name instance.jena-fuseki -h tft-jena-fuseki -d bordercloud/tft-jena-fuseki
+docker run --privileged --name instance.tft-jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
+#docker run --privileged --name instance.tft-jena-fuseki -h tft-jena-fuseki -d bordercloud/tft-jena-fuseki
 # 172.17.0.3
 docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.4
@@ -27,8 +25,8 @@ docker run --privileged --name instance.tft.example1.org -h example1.org -d bord
 # 172.17.0.5
 docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
 # 172.17.0.6 for local
-#docker run --privileged --name instance.tft_database -d tft-jena-fuseki
-docker run --privileged --name instance.tft_database -d bordercloud/tft-jena-fuseki
+docker run --privileged --name instance.tft_database -d tft-jena-fuseki
+#docker run --privileged --name instance.tft_database -d bordercloud/tft-jena-fuseki
 
 git clone --recursive https://github.com/BorderCloud/TFT.git
 cd TFT
@@ -51,8 +49,18 @@ php ./tft-testsuite -a -t fuseki -q http://172.17.0.6/test/query \
                     
 php ./tft -t fuseki -q http://172.17.0.6/test/query \
                     -u http://172.17.0.6/test/update \
-          -tt fuseki -tq http://172.17.0.2/test/query \
-                    -tu http://172.17.0.2/test/update \
+          -tt fuseki -tq http://172.17.0.2:8080/test/query \
+                    -tu http://172.17.0.2:8080/test/update \
+          -r http://example.org/buildid2   \
+          -o ./junit  \
+          --softwareName="Jena" \
+          --softwareDescribeTag=X.X.X \
+          --softwareDescribe="Name" -d
+          
+          
+php ./tft -t fuseki -q http://172.17.0.6/test/query \
+                    -u http://172.17.0.6/test/update \
+          -tt fuseki -te http://172.17.0.2/sparql \
           -r http://example.org/buildid   \
           -o ./junit  \
           --softwareName="Jena" \
@@ -61,7 +69,7 @@ php ./tft -t fuseki -q http://172.17.0.6/test/query \
                     
 php ./tft-score -t fuseki -q http://172.17.0.6/test/query \
                           -u http://172.17.0.6/test/update \
-                -r  http://example.org/buildid
+                -r  http://example.org/buildid2
 ```
 
 # restart containers of TFT
@@ -70,13 +78,13 @@ docker start instance.tft-jena-fuseki
 docker start instance.tft.example.org
 docker start instance.tft.example1.org
 docker start instance.tft.example2.org
-docker start instance.tft_database
+docker start instance.tft-database
 ```
 
 # Delete containers of TFT
 ```
-docker stop instance.tft_database
-docker rm instance.tft_database
+docker stop instance.tft-database
+docker rm instance.tft-database
 docker stop instance.tft.example.org
 docker rm instance.tft.example.org
 docker stop instance.tft.example1.org
@@ -103,4 +111,49 @@ instance.tft-jena-fuseki" => 172.17.0.2
 instance.tft.example.org => 172.17.0.3
 instance.tft.example1.org => 172.17.0.4
 nstance.tft.example2.org => 172.17.0.5
-instance.tft_database => 172.17.0.6
+instance.tft-database => 172.17.0.6
+
+# Open bash in container
+```
+docker exec -it instance.tft-jena-fuseki bash
+docker exec -it instance.tft-database bash
+```
+
+#Realign SPARQL API with Varnish
+
+## Install Varnish 6 and modules
+```
+yum install python-docutils automake autoconf libtool ncurses-devel libxslt groff pcre-devel pkgconfig
+
+wget https://packagecloud.io/install/repositories/varnishcache/varnish60/script.rpm.sh
+chmod +x ./script.rpm.sh
+./script.rpm.sh
+yum install varnish varnish-devel
+
+git clone https://github.com/varnish/varnish-modules.git
+cd varnish-modules
+./bootstrap  
+./configure
+make
+make install
+```
+
+## Check test
+```
+varnishtest rewriting.vtc
+```
+
+## Test on server
+```
+#varnishd -C -f /etc/varnish/default.vcl
+vi /etc/varnish/default.vcl
+systemctl start varnish
+systemctl enable varnish
+
+```
+
+# Logs
+```
+journalctl -f -u jena
+journalctl -f -u varnish
+```
