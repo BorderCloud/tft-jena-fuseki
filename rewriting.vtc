@@ -50,17 +50,17 @@ varnish v1 -vcl+backend {
 
 
 client c1 {
-	#POST or GET http://example.org/XXXX/sparql?query=
-	#POST or GET http://example.org/XXXX/sparql?update=
+	#GET http://example.org/XXXX/sparql?query=
 	txreq -req "GET" -url "/sparql?query=test"
 	rxresp
 
+	#POST http://example.org/XXXX/sparql?query=
 	txreq -req "POST" -url "/sparql" -body "query=test"
 	rxresp
 
+	#POST http://example.org/XXXX/sparql?update=
 	txreq -req "POST" -url "/sparql" -body "update=test"
 	rxresp
 } -run
 
 # varnishtest rewriting.vtc
-# varnishd -C -f rewriting.vtc
