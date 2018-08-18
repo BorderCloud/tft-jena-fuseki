@@ -17,8 +17,8 @@ env:
     - NAME="Jena Fuseki"
     - SOFTWARE_DESCRIBE="Jena Fuseki"
     - VERSION="3.8.0"
-#    - SPARQLSCORE_DATABASE="134.158.74.247"
-    - SPARQLSCORE_DATABASE="172.17.0.6:8080" #local
+    - SPARQLSCORE_DATABASE="134.158.74.247"
+#    - SPARQLSCORE_DATABASE="172.17.0.6:8080" #local
 
 services:
   - docker
@@ -68,8 +68,8 @@ script:
 
 
 # Save the Docker image
-# after_success:
-#  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-#    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-#    docker push bordercloud/tft-jena-fuseki;
-#    fi
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+    docker push bordercloud/tft-jena-fuseki;
+    fi
