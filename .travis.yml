@@ -19,11 +19,16 @@ env:
     - VERSION="4.0.0"
 #    - SPARQLSCORE_DATABASE="134.158.74.247"
     - SPARQLSCORE_DATABASE="172.30.0.6:8080" #local
+    - DOCKER_COMPOSE_VERSION=1.29.1
 
 services:
   - docker
 
 before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
 # Download docker's images 
   - docker pull bordercloud/tft-virtuoso7-stable
 #  - docker pull bordercloud/tft-jena-fuseki
@@ -33,7 +38,6 @@ before_install:
 
 script:
 # Deploy TFT
-  - docker system prune -f
   - docker-compose up -d 
 
 #   - sleep 30s
