@@ -34,7 +34,7 @@ before_install:
 script:
 # Deploy TFT
   - docker-compose down
-  - docker network prune
+  - docker network prune -f
   - docker-compose up -d 
 
   - sleep 30s
