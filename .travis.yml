@@ -54,5 +54,7 @@ script:
 after_success:
    - if [ "$TRAVIS_BRANCH" == "master" ]; then
      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
-     docker push bordercloud/tft-jena-fuseki;
+     docker tag tft-jena-fuseki bordercloud/tft-jena-fuseki:latest
+     docker tag tft-jena-fuseki bordercloud/tft-jena-fuseki:${VERSION} ;
+     docker push --all-tags bordercloud/tft-jena-fuseki ;
      fi
