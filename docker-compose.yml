@@ -7,7 +7,7 @@ services:
     privileged: true
     networks:
       tft:
-        ipv4_address:  172.30.0.2
+        ipv4_address:  172.18.0.2
         
   tft-example:
     image: bordercloud/tft-virtuoso7-stable
@@ -16,7 +16,7 @@ services:
     privileged: true
     networks:
       tft:
-        ipv4_address: 172.30.0.3
+        ipv4_address: 172.18.0.3
         
   tft-example1:
     image: bordercloud/tft-virtuoso7-stable
@@ -25,7 +25,7 @@ services:
     privileged: true
     networks:
       tft:
-        ipv4_address: 172.30.0.4
+        ipv4_address: 172.18.0.4
         
   tft-example2:
     image: bordercloud/tft-virtuoso7-stable
@@ -34,7 +34,7 @@ services:
     privileged: true
     networks:
       tft:
-        ipv4_address: 172.30.0.5
+        ipv4_address: 172.18.0.5
         
   tft-database:
     image: tft-jena-fuseki:latest
@@ -43,10 +43,10 @@ services:
     privileged: true
     networks:
       tft:
-        ipv4_address: 172.30.0.6
+        ipv4_address: 172.18.0.6
         
 networks:
   tft:
     ipam:
       config:
-        - subnet: 172.30.0.0/6
+        - subnet: 172.18.0.0/6
