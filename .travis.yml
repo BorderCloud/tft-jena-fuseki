@@ -25,40 +25,40 @@ services:
 
 before_install:
 # Download docker's images 
-  - docker pull bordercloud/tft-virtuoso7-stable
+#  - docker pull bordercloud/tft-virtuoso7-stable
 #  - docker pull bordercloud/tft-jena-fuseki
 
 # Compile the docker's project 
-  - docker build -t tft-jena-fuseki .
+#   - docker build -t tft-jena-fuseki .
 
 script:
 # Deploy TFT
   - docker-compose down
+  - docker network list
   - docker network prune -f
-  - docker-compose up -d 
+#  - docker-compose up -d 
 
-  - sleep 30s
+#   - sleep 30s
   
-  - git clone --recursive https://github.com/BorderCloud/TFT.git
-  - cd TFT
-# install SPARQL client 
-  - composer install
-# install JMeter 
-
-  - wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-5.4.1.tgz
-  - tar xvzf apache-jmeter-5.4.1.tgz
-  - mv  apache-jmeter-5.4.1 jmeter
-  - rm apache-jmeter-5.4.1.tgz
+#   - git clone --recursive https://github.com/BorderCloud/TFT.git
+#   - cd TFT
+# # install SPARQL client 
+#   - composer install
+# # install JMeter 
+#   - wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-5.4.1.tgz
+#   - tar xvzf apache-jmeter-5.4.1.tgz
+#   - mv  apache-jmeter-5.4.1 jmeter
+#   - rm apache-jmeter-5.4.1.tgz
   
-  -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
-  -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -te http://172.17.0.2/sparql -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}" 
-  -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
+#   -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
+#   -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -te http://172.17.0.2/sparql -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}" 
+#   -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
 
-  -   docker-compose stop
+#   -   docker-compose stop
   
 # Save the Docker image
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-    docker push bordercloud/tft-jena-fuseki;
-    fi
+#   - if [ "$TRAVIS_BRANCH" == "master" ]; then
+#     docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+#     docker push bordercloud/tft-jena-fuseki;
+#     fi
