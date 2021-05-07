@@ -33,7 +33,7 @@ before_install:
 
 script:
 # Deploy TFT
-  - sudo systemctl restart docker
+  - docker system prune -f
   - docker-compose up -d 
 
 #   - sleep 30s
