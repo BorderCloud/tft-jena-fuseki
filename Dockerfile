@@ -21,7 +21,7 @@ RUN  rpm --force -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-
 
 RUN  yum install -y python-docutils automake autoconf libtool ncurses-devel libxslt groff pcre-devel pkgconfig \
     && cd /tmp \
-	&& wget https://packagecloud.io/install/repositories/varnishcache/varnish60/script.rpm.sh \
+	&& wget https://packagecloud.io/install/repositories/varnishcache/varnish66/script.rpm.sh \
     && chmod +x ./script.rpm.sh \
     && ./script.rpm.sh \
     && yum install -y varnish varnish-devel \
@@ -35,28 +35,30 @@ RUN  cd /tmp \
     && make \
     && make install 
         
-COPY varnish.params /etc/varnish/varnish.params
+COPY varnish.service /etc/systemd/system
+COPY default.vcl /etc/varnish/default.vcl
 
-RUN  yum install -y java  \
+RUN  yum install -y java-11-openjdk  \
 && yum clean all
 
 RUN  cd /tmp \
-  && wget -q --timeout=600 http://www-eu.apache.org/dist/jena/binaries/apache-jena-fuseki-3.8.0.tar.gz \
+  && wget -q --timeout=600 http://www-eu.apache.org/dist/jena/binaries/apache-jena-fuseki-4.0.0.tar.gz \
   && tar xzvf *.tar.gz \
-  &&  mv /tmp/apache-jena-fuseki-3.8.0  /opt
+  &&  mv /tmp/apache-jena-fuseki-4.0.0  /opt
 
-COPY fuseki-config.ttl /opt/apache-jena-fuseki-3.8.0
-COPY log4j.properties /opt/apache-jena-fuseki-3.8.0
-COPY load.sh /opt/apache-jena-fuseki-3.8.0
+RUN mkdir /opt/apache-jena-fuseki-4.0.0/run
+RUN mkdir /opt/apache-jena-fuseki-4.0.0/run/configuration
+
+COPY test.ttl /opt/apache-jena-fuseki-4.0.0/run/configuration
+COPY log4j.properties /opt/apache-jena-fuseki-4.0.0
+COPY load.sh /opt/apache-jena-fuseki-4.0.0
 COPY jena.service /etc/systemd/system
 
-RUN mkdir /opt/apache-jena-fuseki-3.8.0/run
-COPY shiro.ini /opt/apache-jena-fuseki-3.8.0/run
+COPY shiro.ini /opt/apache-jena-fuseki-4.0.0/run
 
-RUN chmod +x /opt/apache-jena-fuseki-3.8.0/load.sh
+RUN chmod +x /opt/apache-jena-fuseki-4.0.0/load.sh
 
 
-COPY default.vcl /etc/varnish/default.vcl
 
 RUN systemctl enable jena
 RUN systemctl enable varnish

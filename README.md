@@ -15,18 +15,8 @@ docker build -t tft-jena-fuseki .
   
 # Deploy network of SPARQL services
 
-# 172.17.0.2
-docker run --privileged --name instance.tft-jena-fuseki -h tft-jena-fuseki -d tft-jena-fuseki
-#docker run --privileged --name instance.tft-jena-fuseki -h tft-jena-fuseki -d bordercloud/tft-jena-fuseki
-# 172.17.0.3
-docker run --privileged --name instance.tft.example.org -h example.org -d bordercloud/tft-virtuoso7-stable
-# 172.17.0.4
-docker run --privileged --name instance.tft.example1.org -h example1.org -d bordercloud/tft-virtuoso7-stable
-# 172.17.0.5
-docker run --privileged --name instance.tft.example2.org -h example2.org -d bordercloud/tft-virtuoso7-stable
-# 172.17.0.6 for local
-docker run --privileged --name instance.tft-database -d tft-jena-fuseki
-#docker run --privileged --name instance.tft-database -d bordercloud/tft-jena-fuseki
+docker-compose up -d 
+# docker-compose stop
 
 git clone --recursive https://github.com/BorderCloud/TFT.git
 cd TFT
@@ -35,54 +25,32 @@ cd TFT
 composer install 
 
 # install JMeter for protocol tests
-wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-4.0.tgz
-tar xvzf apache-jmeter-4.0.tgz 
-mv  apache-jmeter-4.0 jmeter
-rm apache-jmeter-4.0.tgz 
+wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-5.4.1.tgz
+tar xvzf apache-jmeter-5.4.1.tgz 
+mv  apache-jmeter-5.4.1 jmeter
+rm apache-jmeter-5.4.1.tgz 
 ```
 
 ### Start tests
 Add parameter debug if necessary '-d'
 ```
-php ./tft-testsuite -a -t fuseki -q http://172.17.0.6:8080/test/query \
-                    -u http://172.17.0.6:8080/test/update
+php ./tft-testsuite -a -t fuseki -q http://172.30.0.6:8080/test/query \
+                    -u http://172.30.0.6:8080/test/update
           
-php ./tft -t fuseki -q http://172.17.0.6:8080/test/query \
-                    -u http://172.17.0.6:8080/test/update \
-          -tt fuseki -te http://172.17.0.2/sparql \
+php ./tft -t fuseki -q http://172.30.0.6:8080/test/query \
+                    -u http://172.30.0.6:8080/test/update \
+          -tt fuseki -te http://172.30.0.2/sparql \
           -r http://example.org/buildid   \
           -o ./junit  \
           --softwareName="Jena" \
           --softwareDescribeTag=X.X.X \
           --softwareDescribe="Name" -d
                     
-php ./tft-score -t fuseki -q http://172.17.0.6:8080/test/query \
-                          -u http://172.17.0.6:8080/test/update \
-                -r  http://example.org/buildid2
+php ./tft-score -t fuseki -q http://172.30.0.6:8080/test/query \
+                          -u http://172.30.0.6:8080/test/update \
+                -r  http://example.org/buildid
 ```
 
-# restart containers of TFT
-```
-docker start instance.tft-jena-fuseki
-docker start instance.tft.example.org
-docker start instance.tft.example1.org
-docker start instance.tft.example2.org
-docker start instance.tft-database
-```
-
-# Delete containers of TFT
-```
-docker stop instance.tft-database
-docker rm instance.tft-database
-docker stop instance.tft.example.org
-docker rm instance.tft.example.org
-docker stop instance.tft.example1.org
-docker rm instance.tft.example1.org
-docker stop instance.tft.example2.org
-docker rm instance.tft.example2.org
-docker stop instance.tft-jena-fuseki
-docker rm instance.tft-jena-fuseki
-```
 
 # Delete all containers
 
@@ -93,14 +61,15 @@ docker rm $(docker ps -a -q)
 
 # Check the network
 ```
-docker network inspect bridge
+docker network list
+docker network inspect tft-jena-fuseki_tft
 ```
 The result has to be :
-instance.tft-jena-fuseki" => 172.17.0.2
-instance.tft.example.org => 172.17.0.3
-instance.tft.example1.org => 172.17.0.4
-nstance.tft.example2.org => 172.17.0.5
-instance.tft-database => 172.17.0.6
+* instance.tft-jena-fuseki" => 172.30.0.2
+* instance.tft.example.org =>  172.30.0.3
+* instance.tft.example1.org => 172.30.0.4
+* instance.tft.example2.org => 172.30.0.5
+* instance.tft-database =>     172.30.0.6
 
 # Open bash in container
 ```
