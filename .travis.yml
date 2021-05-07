@@ -33,7 +33,8 @@ before_install:
 
 script:
 # Deploy TFT
-
+  - docker-compose down
+  - docker network prune
   - docker-compose up -d 
 
   - sleep 30s
@@ -43,10 +44,11 @@ script:
 # install SPARQL client 
   - composer install
 # install JMeter 
-  - wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-4.0.tgz
-  - tar xzf apache-jmeter-4.0.tgz 
-  - mv  apache-jmeter-4.0 jmeter
-  - rm apache-jmeter-4.0.tgz 
+
+  - wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-5.4.1.tgz
+  - tar xvzf apache-jmeter-5.4.1.tgz
+  - mv  apache-jmeter-5.4.1 jmeter
+  - rm apache-jmeter-5.4.1.tgz
   
   -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
   -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -te http://172.17.0.2/sparql -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}" 
