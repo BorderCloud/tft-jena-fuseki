@@ -18,7 +18,7 @@ env:
     - SOFTWARE_DESCRIBE="Jena Fuseki"
     - VERSION="4.0.0"
 #    - SPARQLSCORE_DATABASE="134.158.74.247"
-    - SPARQLSCORE_DATABASE="172.30.0.6:8080" #local
+    - SPARQLSCORE_DATABASE="172.18.0.6:8080" #local
 
 services:
   - docker
@@ -33,25 +33,23 @@ before_install:
   - sudo docker-compose up -d 
 
 script:
-   - docker network list
-#  - sleep 30s
+  - sleep 30s
+  - git clone --recursive https://github.com/BorderCloud/TFT.git
+  - cd TFT
+# install SPARQL client 
+  - composer install
+# install JMeter 
+  - wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-5.4.1.tgz
+  - tar xvzf apache-jmeter-5.4.1.tgz
+  - mv  apache-jmeter-5.4.1 jmeter
+  - rm apache-jmeter-5.4.1.tgz
   
-#   - git clone --recursive https://github.com/BorderCloud/TFT.git
-#   - cd TFT
-# # install SPARQL client 
-#   - composer install
-# # install JMeter 
-#   - wget http://mirrors.standaloneinstaller.com/apache//jmeter/binaries/apache-jmeter-5.4.1.tgz
-#   - tar xvzf apache-jmeter-5.4.1.tgz
-#   - mv  apache-jmeter-5.4.1 jmeter
-#   - rm apache-jmeter-5.4.1.tgz
-  
-#   -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
-#   -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -te http://172.17.0.2/sparql -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}" 
-#   -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
+  -   php ./tft-testsuite -a -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update
+  -   php ./tft -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -tt fuseki -te http://172.18.0.2/sparql -r ${URI} -o ./junit --softwareName="${NAME}"  --softwareDescribeTag=${VERSION}  --softwareDescribe="${TRAVIS_COMMIT}" 
+  -   php ./tft-score -t fuseki -q http://${SPARQLSCORE_DATABASE}/test/query -u http://${SPARQLSCORE_DATABASE}/test/update -r  ${URI}
 
-#   -   docker-compose stop
-  
+  -   docker-compose stop
+ 
 # Save the Docker image
 after_success:
 #   - if [ "$TRAVIS_BRANCH" == "master" ]; then

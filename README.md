@@ -34,23 +34,22 @@ rm apache-jmeter-5.4.1.tgz
 ### Start tests
 Add parameter debug if necessary '-d'
 ```
-php ./tft-testsuite -a -t fuseki -q http://172.30.0.6:8080/test/query \
-                    -u http://172.30.0.6:8080/test/update
+php ./tft-testsuite -a -t fuseki -q http://172.18.0.6:8080/test/query \
+                    -u http://172.18.0.6:8080/test/update
           
-php ./tft -t fuseki -q http://172.30.0.6:8080/test/query \
-                    -u http://172.30.0.6:8080/test/update \
-          -tt fuseki -te http://172.30.0.2/sparql \
+php ./tft -t fuseki -q http://172.18.0.6:8080/test/query \
+                    -u http://172.18.0.6:8080/test/update \
+          -tt fuseki -te http://172.18.0.2/sparql \
           -r http://example.org/buildid   \
           -o ./junit  \
           --softwareName="Jena" \
           --softwareDescribeTag=X.X.X \
-          --softwareDescribe="Name" -d
+          --softwareDescribe="Name"
                     
-php ./tft-score -t fuseki -q http://172.30.0.6:8080/test/query \
-                          -u http://172.30.0.6:8080/test/update \
+php ./tft-score -t fuseki -q http://172.18.0.6:8080/test/query \
+                          -u http://172.18.0.6:8080/test/update \
                 -r  http://example.org/buildid
 ```
-
 
 # Delete all containers
 
@@ -65,11 +64,11 @@ docker network list
 docker network inspect tft-jena-fuseki_tft
 ```
 The result has to be :
-* instance.tft-jena-fuseki" => 172.30.0.2
-* instance.tft.example.org =>  172.30.0.3
-* instance.tft.example1.org => 172.30.0.4
-* instance.tft.example2.org => 172.30.0.5
-* instance.tft-database =>     172.30.0.6
+* instance.tft-jena-fuseki" => 172.18.0.2
+* instance.tft.example.org =>  172.18.0.3
+* instance.tft.example1.org => 172.18.0.4
+* instance.tft.example2.org => 172.18.0.5
+* instance.tft-database =>     172.18.0.6
 
 # Open bash in container
 ```
