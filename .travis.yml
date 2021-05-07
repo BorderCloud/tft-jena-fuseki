@@ -33,6 +33,8 @@ before_install:
 
 script:
 # Deploy TFT
+  - docker network inspect bridge
+  - docker network inspect host
   - docker-compose down
   - docker network list
   - docker network prune -f
