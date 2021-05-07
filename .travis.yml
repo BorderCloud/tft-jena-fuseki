@@ -57,4 +57,5 @@ after_success:
      docker tag tft-jena-fuseki bordercloud/tft-jena-fuseki:latest ;
      docker tag tft-jena-fuseki bordercloud/tft-jena-fuseki:${VERSION} ;
      docker push bordercloud/tft-jena-fuseki ;
+     docker pushrm bordercloud/tft-jena-fuseki ;
      fi
