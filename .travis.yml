@@ -25,20 +25,16 @@ services:
 
 before_install:
 # Download docker's images 
-#  - docker pull bordercloud/tft-virtuoso7-stable
+  - docker pull bordercloud/tft-virtuoso7-stable
 #  - docker pull bordercloud/tft-jena-fuseki
 
 # Compile the docker's project 
-#   - docker build -t tft-jena-fuseki .
+  - docker build -t tft-jena-fuseki .
 
 script:
 # Deploy TFT
-  - docker network inspect bridge
-  - docker network inspect host
-  - docker-compose down
-  - docker network list
-  - docker network prune -f
-#  - docker-compose up -d 
+  - sudo systemctl restart docker
+  - docker-compose up -d 
 
 #   - sleep 30s
   
