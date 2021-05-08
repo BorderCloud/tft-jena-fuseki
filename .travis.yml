@@ -24,6 +24,7 @@ services:
   - docker
 
 before_install:
+  - wget https://github.com/christian-korneck/docker-pushrm/releases/latest
 # Download docker's images 
   - docker pull bordercloud/tft-virtuoso7-stable
 #  - docker pull bordercloud/tft-jena-fuseki
@@ -57,5 +58,4 @@ after_success:
      docker tag tft-jena-fuseki bordercloud/tft-jena-fuseki:latest ;
      docker tag tft-jena-fuseki bordercloud/tft-jena-fuseki:${VERSION} ;
      docker push bordercloud/tft-jena-fuseki ;
-     docker pushrm bordercloud/tft-jena-fuseki ;
      fi
