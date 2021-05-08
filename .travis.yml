@@ -24,7 +24,6 @@ services:
   - docker
 
 before_install:
-  - wget https://github.com/christian-korneck/docker-pushrm/releases/latest
 # Download docker's images 
   - docker pull bordercloud/tft-virtuoso7-stable
 #  - docker pull bordercloud/tft-jena-fuseki
