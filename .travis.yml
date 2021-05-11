@@ -24,12 +24,9 @@ services:
   - docker
 
 before_install:
-# Download docker's images 
-  - docker pull bordercloud/tft-virtuoso7-stable
-#  - docker pull bordercloud/tft-jena-fuseki
-
 # Compile the docker's project 
   - docker build -t tft-jena-fuseki .
+# Deploy all SPARQL services
   - sudo docker-compose up -d 
 
 script:

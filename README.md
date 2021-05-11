@@ -6,15 +6,10 @@
 
 ### Install
 ```
-# Download docker's images 
-docker pull bordercloud/tft-virtuoso7-stable
-#docker pull bordercloud/tft-jena-fuseki
-
 # Compile the docker's project 
 docker build -t tft-jena-fuseki .
   
 # Deploy network of SPARQL services
-
 docker-compose up -d 
 # docker-compose stop
 
@@ -36,7 +31,7 @@ Add parameter debug if necessary '-d'
 ```
 php ./tft-testsuite -a -t fuseki -q http://172.18.0.6:8080/test/query \
                     -u http://172.18.0.6:8080/test/update
-          
+      
 php ./tft -t fuseki -q http://172.18.0.6:8080/test/query \
                     -u http://172.18.0.6:8080/test/update \
           -tt fuseki -te http://172.18.0.2/sparql \
@@ -49,6 +44,23 @@ php ./tft -t fuseki -q http://172.18.0.6:8080/test/query \
 php ./tft-score -t fuseki -q http://172.18.0.6:8080/test/query \
                           -u http://172.18.0.6:8080/test/update \
                 -r  http://example.org/buildid
+```
+
+
+# Delete containers of TFT
+
+```
+docker stop instance.tft-database
+docker rm instance.tft-database
+docker stop instance.tft.example.org
+docker rm instance.tft.example.org
+docker stop instance.tft.example1.org
+docker rm instance.tft.example1.org
+docker stop instance.tft.example2.org
+docker rm instance.tft.example2.org
+docker stop instance.tft-jena-fuseki
+docker rm instance.tft-jena-fuseki
+
 ```
 
 # Delete all containers
@@ -102,6 +114,7 @@ varnishtest rewriting.vtc
 
 ## Test on server
 ```
+docker exec -it instance.tft-jena-fuseki bash
 #varnishd -C -f /etc/varnish/default.vcl
 vi /etc/varnish/default.vcl
 systemctl start varnish
