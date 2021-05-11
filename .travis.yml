@@ -17,8 +17,8 @@ env:
     - NAME="Jena Fuseki"
     - SOFTWARE_DESCRIBE="Apache Jena Fuseki is a RDF storage with a SPARQL server."
     - VERSION="4.0.0"
-#    - SPARQLSCORE_DATABASE="134.158.74.247"
-    - SPARQLSCORE_DATABASE="172.18.0.6:8080" #local
+    - SPARQLSCORE_DATABASE="134.158.74.239"
+#    - SPARQLSCORE_DATABASE="172.18.0.6:8080" #local
 
 services:
   - docker
