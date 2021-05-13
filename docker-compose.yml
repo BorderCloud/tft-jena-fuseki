@@ -10,7 +10,7 @@ services:
         ipv4_address:  172.18.0.2
         
   tft-example:
-    image: bordercloud/tft-virtuoso7-stable
+    image: tft-jena-fuseki:latest
     hostname: example.org
     container_name: instance.tft.example.org
     privileged: true
@@ -19,7 +19,7 @@ services:
         ipv4_address: 172.18.0.3
         
   tft-example1:
-    image: bordercloud/tft-virtuoso7-stable
+    image: tft-jena-fuseki:latest
     hostname: example1.org
     container_name: instance.tft.example1.org
     privileged: true
@@ -28,7 +28,7 @@ services:
         ipv4_address: 172.18.0.4
         
   tft-example2:
-    image: bordercloud/tft-virtuoso7-stable
+    image: tft-jena-fuseki:latest
     hostname: example2.org
     container_name: instance.tft.example2.org
     privileged: true

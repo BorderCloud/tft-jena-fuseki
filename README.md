@@ -124,6 +124,6 @@ systemctl enable varnish
 
 # Logs
 ```
-journalctl -f -u jena
+journalctl -f -u jena -n 1000
 journalctl -f -u varnish
 ```

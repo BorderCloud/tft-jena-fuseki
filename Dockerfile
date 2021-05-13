@@ -51,14 +51,9 @@ RUN mkdir /opt/apache-jena-fuseki-4.0.0/run/configuration
 
 COPY test.ttl /opt/apache-jena-fuseki-4.0.0/run/configuration
 COPY log4j.properties /opt/apache-jena-fuseki-4.0.0
-COPY load.sh /opt/apache-jena-fuseki-4.0.0
 COPY jena.service /etc/systemd/system
 
 COPY shiro.ini /opt/apache-jena-fuseki-4.0.0/run
-
-RUN chmod +x /opt/apache-jena-fuseki-4.0.0/load.sh
-
-
 
 RUN systemctl enable jena
 RUN systemctl enable varnish

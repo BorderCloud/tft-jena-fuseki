@@ -5,11 +5,23 @@ After=network.target
 [Service]
 Type=simple
 Restart=always
+#Restart=on-abort
 RestartSec=5
-ExecStart=/opt/apache-jena-fuseki-4.0.0/load.sh
-ExecReload=pkill -9 -f fuseki || true
-ExecStop=pkill -9 -f fuseki || true
+# Edit environment variables to match your installation
+Environment=JAVA_HOME=/etc/alternatives/jre
+Environment=FUSEKI_HOME=/opt/apache-jena-fuseki-4.0.0
+Environment=FUSEKI_BASE=/opt/apache-jena-fuseki-4.0.0/run
+# Edit the line below to adjust the amount of memory allocated to Fuseki
+Environment=JVM_ARGS=-Xmx2400M
+# Edit to match your installation
+ExecStart=/opt/apache-jena-fuseki-4.0.0/fuseki-server --port=8080
+# Java processes exit with status 143 when terminated by SIGTERM, this
+# should be considered a successful shutdown
+SuccessExitStatus=143
 PrivateTmp=true
+ExecStopPost=-/usr/bin/pkill -9 -f fuseki-server
+ExecStopPost=-/usr/bin/pkill -F /opt/apache-jena-fuseki-4.0.0/run/system/tdb.lock
+ExecStopPost=-/usr/bin/rm -f /opt/apache-jena-fuseki-4.0.0/run/system/tdb.lock
 
 [Install]
 WantedBy=multi-user.target
