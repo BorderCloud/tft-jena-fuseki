@@ -42,18 +42,18 @@ RUN  yum install -y java-11-openjdk  \
 && yum clean all
 
 RUN  cd /tmp \
-  && wget -q --timeout=600 http://www-eu.apache.org/dist/jena/binaries/apache-jena-fuseki-4.0.0.tar.gz \
+  && wget -q --timeout=600 http://www-eu.apache.org/dist/jena/binaries/apache-jena-fuseki-4.1.0.tar.gz \
   && tar xzvf *.tar.gz \
-  &&  mv /tmp/apache-jena-fuseki-4.0.0  /opt
+  &&  mv /tmp/apache-jena-fuseki-4.1.0  /opt
 
-RUN mkdir /opt/apache-jena-fuseki-4.0.0/run
-RUN mkdir /opt/apache-jena-fuseki-4.0.0/run/configuration
+RUN mkdir /opt/apache-jena-fuseki-4.1.0/run
+RUN mkdir /opt/apache-jena-fuseki-4.1.0/run/configuration
 
-COPY test.ttl /opt/apache-jena-fuseki-4.0.0/run/configuration
-COPY log4j.properties /opt/apache-jena-fuseki-4.0.0
+COPY test.ttl /opt/apache-jena-fuseki-4.1.0/run/configuration
+COPY log4j.properties /opt/apache-jena-fuseki-4.1.0
 COPY jena.service /etc/systemd/system
 
-COPY shiro.ini /opt/apache-jena-fuseki-4.0.0/run
+COPY shiro.ini /opt/apache-jena-fuseki-4.1.0/run
 
 RUN systemctl enable jena
 RUN systemctl enable varnish

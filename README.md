@@ -31,7 +31,7 @@ Add parameter debug if necessary '-d'
 ```
 php ./tft-testsuite -a -t fuseki -q http://172.18.0.6:8080/test/query \
                     -u http://172.18.0.6:8080/test/update
-      
+
 php ./tft -t fuseki -q http://172.18.0.6:8080/test/query \
                     -u http://172.18.0.6:8080/test/update \
           -tt fuseki -te http://172.18.0.2/sparql \
@@ -40,7 +40,7 @@ php ./tft -t fuseki -q http://172.18.0.6:8080/test/query \
           --softwareName="Jena" \
           --softwareDescribeTag=X.X.X \
           --softwareDescribe="Name"
-                    
+        
 php ./tft-score -t fuseki -q http://172.18.0.6:8080/test/query \
                           -u http://172.18.0.6:8080/test/update \
                 -r  http://example.org/buildid
