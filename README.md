@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/BorderCloud/tft-jena-fuseki.svg)](https://travis-ci.org/BorderCloud/tft-jena-fuseki)
-
+[![Test](https://github.com/BorderCloud/tft-jena-fuseki/actions/workflows/test.yml/badge.svg)](https://github.com/BorderCloud/tft-jena-fuseki/actions/workflows/test.yml) ([SPARQLScore](http://sparqlscore.com/)) [![Publish](https://github.com/BorderCloud/tft-jena-fuseki/actions/workflows/publish.yml/badge.svg)](https://github.com/BorderCloud/tft-jena-fuseki/actions/workflows/publish.yml)
 # tft-jena-fuseki : Jena Fuseki
 
 ## Calculate SparqlScore with TFT in local
